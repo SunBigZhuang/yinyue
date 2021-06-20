@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>音乐播放器</title>
+  <!-- 样式 -->
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="wrap"  id="player">
+    <img alt="" v-bind:src="musicFm">
+    <!-- 播放器主体区域 -->
+    <div class="play_wrap">
+      <div class="search_bar">
+        <img src="images/player_title.png" alt="" />
+        <!-- 搜索歌曲 -->
+        <input type="text" autocomplete="off" v-on:keyup.enter="searchMusic" v-model="query" placeholder="回车搜索你想听的歌名/歌手">
+      </div>
+      <div class="center_con">
+        <!-- 搜索歌曲列表 -->
+        <div>
+          <ul class="song_list">
+            <li v-for="item in musicList">
+              <a href="javascript:;" v-on:click="palyMusic(item.id)"></a>
+              <a href="javascript:;" v-on:click="palyMusic(item.id)"><b>{{item.name}}</b></a>    
+              <span v-if="item.mvid != 0" v-on:click="playMv(item.mvid)"><i></i></span>
+
+            </li>
+          </ul>
+          <img src="images/line.png" class="switch_btn" alt="">
+        </div>
+        <!-- 歌曲信息容器 -->
+        <div class="player_con" :class="{playing:isPlay}">
+          <img src="images/player_bar.png" class="play_bar" />
+          <!-- 黑胶碟片 -->
+          <img src="images/disc.png" class="disc autoRotate" />
+          <img class="cover autoRotate" v-bind:src="musicFm">
+        </div>
+        <!-- 评论容器 -->
+        <div class="comment_wrapper">
+          <h5 class="hotLy">热门留言</h5>
+          <div class="comment_list">
+            <dl v-for="item in hotPl">
+              <dt><img v-bind:src="item.user.avatarUrl" alt=""></dt>
+              <dd class="name">{{item.user.nickname}}</dd>
+              <dd class="detail">
+               {{item.content}}
+              </dd>
+            </dl>
+          </div>
+          <img src="images/line.png" class="right_line">
+        </div>
+      </div>
+      <div class="audio_con">
+        <audio ref="audio" controls autoplay loop class="myaudio" v-bind:src="musicSrc" @play="play" @pause="pause"></audio>
+      </div>
+      <div class="video_con" style="display: none;" v-show="isShow">
+        <video controls="controls" v-bind:src="mvUrl"></video>
+        <div class="mask" v-on:click="hide"></div>
+      </div>
+    </div>
+  </div>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <!-- 自己的js -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>
